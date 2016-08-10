@@ -1,15 +1,5 @@
 #include "main.h"
 
-int main()
-{
-    init_Leds();
-    init_Button();
-    setSysTick();
-
-    while(1) {
-        loop();
-    }
-}
 /*--------------Delay--------------*/
 
 volatile uint32_t msTicks;
@@ -33,6 +23,18 @@ void setSysTick()
     }
 }
 /*--------------Delay--------------*/
+
+int main()
+{
+    init_Leds();
+    init_Button();
+    setSysTick();
+
+    while(1) {
+        loop();
+    }
+}
+
 
 /*--------------Initial LEDs--------------*/
 
