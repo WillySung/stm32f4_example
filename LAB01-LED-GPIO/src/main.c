@@ -40,9 +40,15 @@ int main()
 
 void init_Leds()
 {
-    /*
-        Fill the code here!!!
-    */
+    GPIO_InitTypeDef GPIO_InitStructure;
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+
+    GPIO_StructInit(&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_InitStructure.GPIO_Pin = LEDS;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    GPIO_SetBits(GPIOD, LEDS);
 }
 /*--------------Initial LEDs--------------*/
 
@@ -50,17 +56,24 @@ void init_Leds()
 
 void init_Button()
 {
-    /*
-        Fill the code here!!!
-    */
+    GPIO_InitTypeDef GPIO_InitStructure;
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    GPIO_InitStructure.GPIO_Pin = USER_BTN;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
 }
 /*--------------Initial Button--------------*/
 
 void loop()
 {
-    /*
-        Goal : Change the led state by pressing the user button.
-        The pins of Leds have been declared in LAB02/inc/main.h
-        Fill the code here!
-    */
+    if(GPIO_ReadInputDataBit(GPIOA, USER_BTN))
+    {
+        GPIO_ToggleBits(GPIOD,LEDS);
+        Delay(250);
+    }
 }
