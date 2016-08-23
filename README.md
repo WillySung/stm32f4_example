@@ -8,7 +8,7 @@ stm32f4d_template
 
 This is Eclipse project template for STM32F4Discovery board
 
-Task-1-Leds
+Test-Leds
 -----------
 
 This is "Hello world" project. Simple blinking LEDs on board.
