@@ -6,8 +6,12 @@
 #include "misc.h"
 #include <stdio.h>
 
+const uint16_t LEDS = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+const uint16_t USER_BTN = GPIO_Pin_0;
 
-void initialize();
+void init_Leds();
+void init_Button();
+void init_Exti();
 void EXTI0_IRQHandler();
 
 void Delay();
