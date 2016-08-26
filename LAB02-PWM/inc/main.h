@@ -7,7 +7,7 @@
 const uint16_t LEDS = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 
 int delta = 1;
-int brigthLed = 0;
+int brightLed = 0;
 
 void init();
 void loop();
