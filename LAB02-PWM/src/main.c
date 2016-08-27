@@ -51,7 +51,8 @@ void init_Leds()
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
     GPIO_InitStructure.GPIO_Pin = LEDS;
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;   //slower the speed to show the brightness changing
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;   
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
     GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF_TIM4);
@@ -63,12 +64,10 @@ void init_Timer()
 {
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 
-    uint16_t PrescalerValue = 1680-1;
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;     //Create TIM base init structure
 
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
-    TIM_TimeBaseStructure.TIM_Period = 1000;
-    TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
+    TIM_TimeBaseStructure.TIM_Period = 1680-1;         //Let PWM frequency = 100Hz ( 84MHz/[(1680-1+1)*(500-1+1)] )
+    TIM_TimeBaseStructure.TIM_Prescaler = 500-1;
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
@@ -76,7 +75,7 @@ void init_Timer()
 
 void init_PWM()
 {
-    TIM_OCInitTypeDef TIM_OCInitStructure;
+    TIM_OCInitTypeDef TIM_OCInitStructure;             //Create TIM output compare init sructure
 
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
@@ -84,16 +83,9 @@ void init_PWM()
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
     TIM_OC1Init(TIM4 , &TIM_OCInitStructure);
-    TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);
-
     TIM_OC2Init(TIM4 , &TIM_OCInitStructure);
-    TIM_OC2PreloadConfig(TIM4, TIM_OCPreload_Enable);
-
     TIM_OC3Init(TIM4 , &TIM_OCInitStructure);
-    TIM_OC3PreloadConfig(TIM4, TIM_OCPreload_Enable);
-
     TIM_OC4Init(TIM4 , &TIM_OCInitStructure);
-    TIM_OC4PreloadConfig(TIM4, TIM_OCPreload_Enable);
 
     TIM_Cmd(TIM4,ENABLE);
 }
