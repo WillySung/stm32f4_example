@@ -90,12 +90,11 @@ void init()
 }
 /*--------------Initial USART--------------*/
 
-void USART_puts(USART_TypeDef *USARTx, volatile unsigned char *str)
+void USART_puts(USART_TypeDef *USARTx, char *str)
 {
     while(*str){
+        USART_SendData(USARTx, *str++);
         while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
-        USART_SendData(USARTx, *str);
-        *str++;
     }
 }
 
@@ -103,10 +102,17 @@ void USART_puts(USART_TypeDef *USARTx, volatile unsigned char *str)
 void USART2_IRQHandler(void)
 {
     if(USART_GetITStatus(USART2, USART_IT_RXNE)){
-        GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
-
+        
         Receive_data = USART_ReceiveData(USART2);
-        static uint8_t count = 0;
+        if(Receive_data == '1'){
+            GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
+            USART_puts(USART2, Receive_data);
+        }
+        else{
+            USART_puts(USART2, "hello\r\n");
+        }
+
+        /*static uint8_t count = 0;
 
         if(count < MAX_STRLEN){
             received_string[count] = Receive_data;
@@ -130,6 +136,6 @@ void USART2_IRQHandler(void)
             for(int i = 0; i<MAX_STRLEN; i++){
                 received_string[i] = 0;
             }
-        }
+        }*/
     }
 }

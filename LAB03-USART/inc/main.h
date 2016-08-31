@@ -9,7 +9,7 @@ const uint16_t TX = GPIO_Pin_2;
 const uint16_t RX = GPIO_Pin_3;
 
 #define MAX_STRLEN 50
-volatile unsigned char received_string[MAX_STRLEN]; // this will hold the recieved string
+char received_string[MAX_STRLEN]; // this will hold the recieved string
 
 
 /*the usart acept the command from RX when RX interrupt is trigger*/
